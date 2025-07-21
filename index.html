@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GameOnX - Home</title>
   <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+  body {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  body.fade-in {
+    opacity: 1;
+  }
+</style>
+  
 </head>
 <body>
   <!-- HEADER -->
@@ -33,5 +45,23 @@
     <img src="assets/qr.png" alt="QR Code" class="qr-code" />
     <p>@ 2025 GameOnX</p>
   </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+    });
+
+    document.querySelectorAll("a[href$='.html'], button[onclick]").forEach(el => {
+      el.addEventListener("click", function (e) {
+        const target = this.getAttribute("onclick")?.match(/'(.*?)'/)?.[1];
+        if (target && target.endsWith(".html")) {
+          e.preventDefault();
+          document.body.classList.remove("fade-in");
+          setTimeout(() => {
+            window.location.href = target;
+          }, 300);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
