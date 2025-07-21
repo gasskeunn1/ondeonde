@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Event - GameOnX</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo" onclick="location.href='index.html'">GAME<span>ON</span>X</div>
+    <div class="header-buttons">
+      <button onclick="window.location.href='https://wa.me/YOURGROUP'">Join Grup</button>
+      <button onclick="window.location.href='https://donate.link'">Donate</button>
+      <button onclick="window.history.back()">Go Back</button>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title live-title">🔴 LIVE EVENT</h1>
+    <div class="video-player">
+      <video id="mainPlayer" controls poster="img/poster.jpg">
+        <source id="mainSource" src="" type="application/x-mpegURL" />
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
+
+    <div id="liveContainer" class="card-container">
+      <div class="bg-gray-800 rounded-md p-3 shadow-mb w-50 cursor-pointer hover:bg-red-700 text-center" onclick="loadStreamCustom(this)" data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/SsxyN4Uo/live.isml/.m3u8" data-poster="https://cdn.jwplayer.com/v2/media/SsxyN4Uo/poster.jpg?width=1920">
+        <h3 class="text-white font-semibold border-b border-gray-500 mb-2">France vs Poland</h3>
+        <p class="text-gray-300 text-sm" data-start="2025-07-21T01:30:00+07:00">21-07-2025 01:30 WIB</p>
+      </div>
+      <div class="bg-gray-800 rounded-md p-3 shadow-mb w-50 cursor-pointer hover:bg-red-700 text-center" onclick="loadStreamCustom(this)" data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/agpcePYv/live.isml/.m3u8" data-poster="https://cdn.jwplayer.com/v2/media/agpcePYv/poster.jpg?width=1920">
+        <h3 class="text-white font-semibold border-b border-gray-500 mb-2">Serbia vs Slovenia</h3>
+        <p class="text-gray-300 text-sm" data-start="2025-07-21T01:30:00+07:00">21-07-2025 | 01:30 WIB</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <img src="img/qr.png" alt="QR Code" class="qr-code" />
+    <p>&copy; 2025 GameOnX</p>
+  </footer>
+
+  <script>
+    function loadStreamCustom(el) {
+      const video = document.getElementById('mainPlayer');
+      const source = document.getElementById('mainSource');
+      source.src = el.getAttribute('data-src');
+      video.poster = el.getAttribute('data-poster') || "";
+      video.load();
+      video.play();
+    }
+  </script>
+</body>
+</html>
