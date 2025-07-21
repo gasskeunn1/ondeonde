@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Channel TV Sport - GameOnX</title>
+
+  <link rel="icon" href="assets/favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <style>
+    .glow-effect:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center px-4 py-4 bg-gray-800 shadow-md">
+    <a href="index.html">
+      <img src="assets/gameonx logo 3.png" alt="GameOnX" class="h-12">
+    </a>
+    <div class="flex gap-2 text-sm">
+      <a href="index.html" class="bg-gray-600 px-3 py-1 rounded font-semibold hover:bg-gray-700">🏠 Kembali ke Home</a>
+      <a href="https://chat.whatsapp.com/L9pViyD35Zq439t75avxq8" target="_blank" class="bg-green-600 px-3 py-1 rounded hover:bg-green-700">Join Grup</a>
+      <a href="https://sociabuzz.com/fiqaz/donate" target="_blank" class="bg-yellow-500 px-3 py-1 rounded hover:bg-yellow-600">Donasi</a>
+    </div>
+  </header>
+
+  <!-- Player -->
+  <div class="flex justify-center mt-5 px-4" id="playerSection">
+    <div class="w-full max-w-4xl">
+      <video id="videoPlayer" class="w-full rounded bg-black glow-effect" controls poster="assets/poster.png"></video>
+    </div>
+  </div>
+
+  <!-- Kartu Channel -->
+  <div class="flex justify-center mt-6 px-4">
+    <div id="channelCards" class="flex flex-wrap justify-center gap-4 max-w-6xl">
+      <!-- Kartu channel akan dimuat dari JSON -->
+    </div>
+  </div>
+
+  <!-- QR Donasi -->
+  <div class="flex justify-center mt-6 px-4">
+    <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://sociabuzz.com/fiqaz/support" alt="QR Donasi" class="mx-auto mb-2" />
+      <p class="text-black font-semibold">Support / Donasi</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center text-xs text-gray-400 mt-auto py-4">
+    © 2025 GameOnX
+  </footer>
+
+  <!-- Script -->
+  <script>
+    let hls;
+
+    function playStream(src, poster) {
+      const video = document.getElementById("videoPlayer");
+      video.poster = poster || "assets/poster.png";
+      video.controls = true;
+
+      if (Hls.isSupported()) {
+        if (hls) hls.destroy();
+        hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = src;
+        video.play();
+      }
+
+      document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    fetch("data/channels.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("channelCards");
+        data.forEach(channel => {
+          const card = document.createElement("div");
+          card.className = "bg-gray-800 rounded p-3 w-60 text-center cursor-pointer hover:bg-blue-700";
+          card.innerHTML = `
+            <h3 class="font-semibold mb-2">${channel.name}</h3>
+            <img src="${channel.poster}" alt="${channel.name}" class="rounded mb-2" />
+            <button class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm">Tonton</button>
+          `;
+          card.onclick = () => playStream(channel.src, channel.poster);
+          container.appendChild(card);
+        });
+      });
+  </script>
+</body>
+</html>
