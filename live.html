@@ -1,165 +1,276 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Live Event - GameOnX</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>GameOnX</title>
+
+  <meta name="description" content="Tonton live streaming voli di GameOnX.">
+  <meta property="og:title" content="GameOnX - Live Streaming">
+  <meta property="og:description" content="Tonton live streaming voli di GameOnX.">
+  <meta property="og:image" content="https://www.gameonx.my.id/assets/preview.jpg">
+  <meta property="og:url" content="https://www.gameonx.my.id">
+  <meta property="og:type" content="website">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+  <link rel="manifest" href="assets/site.webmanifest">
+
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
-    body {
-      background-color: #0d0d0d;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
+    .glow-effect {
+      box-shadow: 0 0 10px rgba(75, 85, 99, 0.5), 0 0 20px rgba(75, 85, 99, 0.3);
+      transition: box-shadow 0.3s ease;
     }
-    body.fade-in {
+    .glow-effect:hover {
+      box-shadow: 0 0 12px rgba(75, 85, 99, 0.7), 0 0 25px rgba(75, 85, 99, 0.4);
+    }
+    .channel-card {
+      transition: box-shadow 0.3s ease;
+    }
+    .channel-card:hover {
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.6), 0 0 24px rgba(239, 68, 68, 0.4);
+    }
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 50;
+      background-color: #1f2937;
+      border-radius: 9999px;
+      padding: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: opacity 0.3s ease;
+    }
+    #scrollTopBtn.show {
+      display: block;
       opacity: 1;
     }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: #1a1a1a;
-    }
-
-    .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #ff4757;
-      cursor: pointer;
-    }
-
-    .header-buttons button {
-      margin-left: 1rem;
-      padding: 0.5rem 1rem;
-      background: #333;
+    .live-label {
+      background-color: #ef4444;
       color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 4px;
+      display: inline-block;
+      animation: blink 1s steps(2, start) infinite;
     }
-
-    .video-player {
-      width: 100%;
-      max-width: 960px;
-      margin: 2rem auto;
-      background: #000;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .live-card {
-      background: #1e1e1e;
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      border: 1px solid #333;
-    }
-
-    .live-card:hover {
-      background: #e50914;
-    }
-
-    .live-card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      border-bottom: 1px solid #555;
-      padding-bottom: 0.5rem;
-    }
-
-    .live-card p {
-      color: #ccc;
-      font-size: 0.9rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: #111;
-    }
-
-    .qr-code {
-      width: 120px;
-      margin-bottom: 0.5rem;
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
     }
   </style>
 </head>
-<body>
-  <header class="header">
-    <div class="logo" onclick="location.href='index.html'">
-      <img src="assets/logo.png" alt="GameOnX Logo" />
-    </div>
-    <div class="header-buttons">
-      <button onclick="window.open('https://chat.whatsapp.com/yourgroup')">Join Grup</button>
-      <button onclick="window.open('https://saweria.co/yourdonation')">Donnate</button>
-      <button onclick="window.history.back()">Go Back</button>
-    </div>
-  </header>
+<script>
+  let hlsInstance = null;
+  let streamCheckTimer = null;
 
-  <main>
-  <main class="live-page">
-    <h1 class="live-title">🔴 LIVE EVENT</h1>  
-    <div class="video-player">
-      <video id="mainPlayer" controls poster="img/poster.jpg">
-        <source id="mainSource" src="" type="application/x-mpegURL" />
-        Your browser does not support HTML5 video.
-      </video>
-    </div>
+  function loadStreamCustom(el) {
+    const src = el.dataset.src;
+    const poster = el.dataset.poster;
+    const player = document.getElementById("videoPlayer");
 
-    <div class="card-container">
-      <div class="live-card" onclick="loadStreamCustom(this)"
-           data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/SsxyN4Uo/live.isml/.m3u8"
-           data-poster="https://cdn.jwplayer.com/v2/media/SsxyN4Uo/poster.jpg?width=1920">
-        <h3>France vs Poland</h3>
-        <p>21-07-2025 | 01:30 WIB</p>
+    if (Hls.isSupported()) {
+      if (hlsInstance) {
+        hlsInstance.destroy();
+        hlsInstance = null;
+      }
+
+      hlsInstance = new Hls();
+      hlsInstance.loadSource(src);
+      hlsInstance.attachMedia(player);
+      hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+        player.play();
+        monitorStream(src, el);
+      });
+    } else if (player.canPlayType("application/vnd.apple.mpegurl")) {
+      player.src = src;
+      player.play();
+    }
+
+    if (poster) player.poster = poster;
+  }
+
+  function monitorStream(src, cardElement) {
+    clearInterval(streamCheckTimer);
+
+    let lastSegmentTime = Date.now();
+
+    hlsInstance.on(Hls.Events.FRAG_LOADED, () => {
+      lastSegmentTime = Date.now();
+    });
+
+    streamCheckTimer = setInterval(() => {
+      const now = Date.now();
+      const diff = (now - lastSegmentTime) / 1000;
+
+      if (diff >= 300) {
+        console.warn("Stream stopped. Removing channel card.");
+        if (cardElement && cardElement.parentNode) {
+          cardElement.parentNode.removeChild(cardElement);
+        }
+
+        clearInterval(streamCheckTimer);
+        if (hlsInstance) {
+          hlsInstance.destroy();
+          hlsInstance = null;
+        }
+      }
+    }, 10000);
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const timeNow = new Date();
+    const pTags = document.querySelectorAll('[data-start]');
+
+    pTags.forEach(p => {
+      const start = new Date(p.dataset.start);
+      if (timeNow >= start) {
+        p.innerHTML = '<span class="live-label">LIVE</span>';
+      }
+    });
+  });
+</script>
+<body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col relative">
+
+  <button id="scrollTopBtn" onclick="scrollToTop()" class="hover:bg-gray-700">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <div class="px-4 pt-4">
+    <header class="flex justify-between items-center px-4 py-3 bg-gray-800 shadow-md rounded-md">
+      <div>
+        <a href="/">
+          <img src="assets/gameonx logo 3.png" alt="GameOnX Logo" class="h-12 w-auto sm:h-10 md:h-12 lg:h-16">
+        </a> 
       </div>
-
-      <div class="live-card" onclick="loadStreamCustom(this)"
-           data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/agpcePYv/live.isml/.m3u8"
-           data-poster="https://cdn.jwplayer.com/v2/media/agpcePYv/poster.jpg?width=1920">
-        <h3>Serbia vs Slovenia</h3>
-        <p>21-07-2025 | 01:30 WIB</p>
+      <div class="flex gap-2 text-sm">
+        <a href="https://chat.whatsapp.com/L9pViyD35Zq439t75avxq8" target="_blank" class="bg-gray-600 px-3 py-1 rounded-lg font-semibold">Join Grup</a>
+        <a href="https://sociabuzz.com/fiqaz/donate" target="_blank" class="bg-gray-600 px-3 py-1 rounded-lg font-semibold">Donasi</a>
       </div>
+    </header>
+  </div>
+  <div class="text-center mt-4 mb-2">
+    <div class="inline-block bg-gradient-to-r from-gray-800 to-gray-700 px-2 py-2 rounded text-sm font-bold text-white shadow-lg border border-gray-600 transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+      🔴LIVE STREAMING
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <img src="assets/qr.png" alt="QR Code" class="qr-code" />
-    <p>&copy; 2025 GameOnX</p>
+  <div class="flex justify-center mt-4 px-4" id="playerSection">
+    <div class="w-full max-w-4xl">
+      <video id="videoPlayer" class="w-full rounded shadow-2xl bg-black glow-effect" poster="assets/poster.png"></video>
+    </div>
+  </div>
+
+  <div class="flex justify-center mt-3 gap-2 text-xs flex-wrap">
+    <button class="bg-transparent border border-white/30 text-white px-3 py-1 rounded hover:bg-white/10 transition" onclick="setQuality('auto')">Auto</button>
+    <button class="bg-transparent border border-white/30 text-white px-3 py-1 rounded hover:bg-white/10 transition" onclick="setQualityByHeight(360)">360p</button>
+    <button class="bg-transparent border border-white/30 text-white px-3 py-1 rounded hover:bg-white/10 transition" onclick="setQualityByHeight(540)">540p</button>
+    <button class="bg-transparent border border-white/30 text-white px-3 py-1 rounded hover:bg-white/10 transition" onclick="setQualityByHeight(720)">720p</button>
+    <button class="bg-transparent border border-white/30 text-white px-3 py-1 rounded hover:bg-white/10 transition" onclick="setQualityByHeight(1080)">1080p</button>
+  </div>
+
+  <div class="flex justify-center mt-5 px-4">
+      <div class="flex flex-wrap justify-center gap-2 max-w-6x1">
+      <div class="bg-gray-800 rounded-md p-3 shadow-mb w-50 cursor-pointer hover:bg-red-700 text-center" onclick="loadStreamCustom(this)" 
+        data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/pn4fdYlz/live.isml/.m3u8" 
+        data-poster="https://cdn.jwplayer.com/v2/media/pn4fdYlz/poster.jpg?width=1920">
+        <h3 class="text-white font-semibold border-b border-gray-500 mb-2">Italy vs USA</h3>
+        <p class="text-gray-300 text-sm" data-start="2025-07-23T21:30:00+07:00">23-07-2025 | 21:30 WIB</p>
+      </div>
+      <div class="bg-gray-800 rounded-md p-3 shadow-mb w-50 cursor-pointer hover:bg-red-700 text-center" onclick="loadStreamCustom(this)" 
+        data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/SLa6ciPM/live.isml/.m3u8" 
+        data-poster="https://cdn.jwplayer.com/v2/media/SLa6ciPM/poster.jpg?width=1920">
+        <h3 class="text-white font-semibold border-b border-gray-500 mb-2">Poland vs China</h3>
+        <p class="text-gray-300 text-sm" data-start="2025-07-24T01:00:00+07:00">24-07-2025 | 01:00 WIB</p>
+      </div>
+      <div class="bg-gray-800 rounded-md p-3 shadow-mb w-50 cursor-pointer hover:bg-red-700 text-center" onclick="loadStreamCustom(this)" 
+        data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/PDmzVCfG/live.isml/.m3u8" 
+        data-poster="https://cdn.jwplayer.com/v2/media/PDmzVCfG/poster.jpg?width=1920">
+        <h3 class="text-white font-semibold border-b border-gray-500 mb-2">Japan vs Turkiye</h3>
+        <p class="text-gray-300 text-sm" data-start="2025-07-24T21:30:00+07:00">24-07-2025 21:30 WIB</p>
+      </div>        
+    </div>
+  </div>
+
+  <div id="donasi" class="flex justify-center mt-6 px-4">
+    <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://sociabuzz.com/fiqaz/support" alt="QR Donasi" class="mx-auto mb-2" />
+      <p class="text-black font-semibold">Support/Donasi</p>
+    </div>
+  </div>
+
+  <footer class="text-center text-xs text-gray-400 mt-auto py-4">
+    © 2025 GameOnX
   </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("fade-in");
-    });
+    const video = document.getElementById("videoPlayer");
+    video.muted = false;
+    let hls;
 
     function loadStreamCustom(el) {
-      const video = document.getElementById('mainPlayer');
-      const source = document.getElementById('mainSource');
-      source.src = el.getAttribute('data-src');
-      video.poster = el.getAttribute('data-poster') || "";
-      video.load();
-      video.play();
+      const src = el.dataset.src;
+      const poster = el.dataset.poster;
+      video.poster = poster;
+      video.controls = true;
+
+      if (Hls.isSupported()) {
+        if (hls) hls.destroy();
+        hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = src;
+        video.addEventListener("loadedmetadata", () => {
+          video.play();
+        }, { once: true });
+      }
+
+      document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function setQuality(level) {
+      if (!hls) return;
+      hls.currentLevel = level === 'auto' ? -1 : parseInt(level);
+    }
+
+    function setQualityByHeight(targetHeight) {
+      if (!hls || !hls.levels) return;
+      const levelIndex = hls.levels.findIndex(level => level.height === targetHeight);
+      if (levelIndex !== -1) {
+        hls.currentLevel = levelIndex;
+      } else {
+        alert("Resolusi tidak tersedia");
+      }
+    }
+
+    const scrollBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.add("show");
+      } else {
+        scrollBtn.classList.remove("show");
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   </script>
 </body>
