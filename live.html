@@ -106,14 +106,19 @@
 </head>
 <body>
   <header class="header">
-    <div class="logo" onclick="location.href='index.html'">GAME<span>ON</span>X</div>
+    <div class="logo" onclick="location.href='index.html'">
+      <img src="assets/logo.png" alt="GameOnX Logo" />
+    </div>
     <div class="header-buttons">
-      <button onclick="window.location.href='https://wa.me/YOURGROUP'">Join Grup</button>
-      <button onclick="window.location.href='https://donate.link'">Donate</button>
+      <button onclick="window.open('https://chat.whatsapp.com/yourgroup')">Join Grup</button>
+      <button onclick="window.open('https://saweria.co/yourdonation')">Donnate</button>
+      <button onclick="window.history.back()">Go Back</button>
     </div>
   </header>
 
   <main>
+  <main class="live-page">
+    <h1 class="live-title">🔴 LIVE EVENT</h1>  
     <div class="video-player">
       <video id="mainPlayer" controls poster="img/poster.jpg">
         <source id="mainSource" src="" type="application/x-mpegURL" />
