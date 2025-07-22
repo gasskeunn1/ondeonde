@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -38,16 +37,23 @@
       <img src="assets/gameonx logo 3.png" alt="GameOnX" class="h-12">
     </a>
     <div class="flex gap-2 text-sm">
-      <a href="index.html" class="bg-gray-600 px-3 py-1 rounded font-semibold hover:bg-gray-700">🏠 Kembali ke Home</a>
+      <a href="index.html" class="bg-gray-600 px-3 py-1 rounded font-semibold hover:bg-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+        Back
+      </a>
       <a href="https://chat.whatsapp.com/L9pViyD35Zq439t75avxq8" target="_blank" class="bg-green-600 px-3 py-1 rounded hover:bg-green-700">Join Grup</a>
       <a href="https://sociabuzz.com/fiqaz/donate" target="_blank" class="bg-yellow-500 px-3 py-1 rounded hover:bg-yellow-600">Donasi</a>
     </div>
   </header>
-  </div>
+
   <div class="text-center mt-4 mb-2">
     <div class="inline-block bg-gradient-to-r from-gray-800 to-gray-700 px-2 py-2 rounded text-sm font-bold text-white shadow-lg border border-gray-600 transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
       🔴LIVE STREAMING
     </div>
+  </div>
+
 
   <div class="flex justify-center mt-5 px-4" id="playerSection">
     <div class="w-full max-w-4xl">
@@ -65,7 +71,7 @@
         onclick="playStream(this)">
         <h3 class="font-semibold mb-2">Italy vs USA</h3>
         <p class="text-sm text-gray-300">23-07-2025 | 21:30 WIB</p>
-        <span class="live-label mt-1 inline-block"></span>
+        <span class="live-label mt-1 inline-block">LIVE</span>
       </div>
 
       <div class="bg-gray-800 rounded p-3 w-60 text-center cursor-pointer hover:bg-red-700"
@@ -86,6 +92,7 @@
     </div>
   </div>
 
+
   <div class="flex justify-center mt-6 px-4">
     <div class="bg-white p-4 rounded-xl shadow-lg text-center">
       <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://sociabuzz.com/fiqaz/support" alt="QR Donasi" class="mx-auto mb-2" />
@@ -93,9 +100,11 @@
     </div>
   </div>
 
+
   <footer class="text-center text-xs text-gray-400 mt-auto py-4">
     © 2025 GameOnX
   </footer>
+
 
   <script>
     let hls;
