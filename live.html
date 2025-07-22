@@ -1,68 +1,125 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GameOnX-Streaming</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <title>Live</title>
+
+  <link rel="icon" href="assets/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
   <style>
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(#000000 0%, #333 100%);
+    .glow-effect:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+    .live-label {
+      background-color: #ef4444;
       color: white;
-    }
-    .main-button {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
       font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
+      border-radius: 4px;
+      animation: blink 1s steps(2, start) infinite;
     }
-    .main-button:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.03);
-    }
-    .live-dot {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: red;
-      border-radius: 50%;
-      margin-right: 8px;
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
     }
   </style>
 </head>
 <body class="bg-gray-900 text-white font-sans min-h-screen flex flex-col">
 
-  <header class="w-full px-4 pt-4">
-    <div class="flex justify-between items-center px-4 py-3 bg-gray-800 shadow-md rounded-md max-w-6xl mx-auto">
-      <a href="/">
-        <img src="assets/gameonx logo 3.png" alt="GameOnX Logo" class="h-12 w-auto sm:h-10 md:h-12 lg:h-16">
-      </a>
-      <div class="flex gap-2 text-sm">
-        <a href="https://chat.whatsapp.com/L9pViyD35Zq439t75avxq8" target="_blank" class="bg-gray-600 px-3 py-1 rounded-lg font-semibold hover:bg-gray-500 transition">Join Grup</a>
-        <a href="https://sociabuzz.com/fiqaz/donate" target="_blank" class="bg-gray-600 px-3 py-1 rounded-lg font-semibold hover:bg-gray-500 transition">Donasi</a>
-      </div>
+
+  <header class="flex justify-between items-center px-4 py-4 bg-gray-800 shadow-md">
+    <a href="index.html">
+      <img src="assets/gameonx logo 3.png" alt="GameOnX" class="h-12">
+    </a>
+    <div class="flex gap-2 text-sm">
+      <a href="index.html" class="bg-gray-600 px-3 py-1 rounded font-semibold hover:bg-gray-700">🏠 Kembali ke Home</a>
+      <a href="https://chat.whatsapp.com/L9pViyD35Zq439t75avxq8" target="_blank" class="bg-green-600 px-3 py-1 rounded hover:bg-green-700">Join Grup</a>
+      <a href="https://sociabuzz.com/fiqaz/donate" target="_blank" class="bg-yellow-500 px-3 py-1 rounded hover:bg-yellow-600">Donasi</a>
     </div>
   </header>
+  </div>
+  <div class="text-center mt-4 mb-2">
+    <div class="inline-block bg-gradient-to-r from-gray-800 to-gray-700 px-2 py-2 rounded text-sm font-bold text-white shadow-lg border border-gray-600 transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+      🔴LIVE STREAMING
+    </div>
 
-  <main class="mt-32 flex flex-col items-center gap-6">
-    <button class="main-button" onclick="location.href='live.html'">
-      <span class="live-dot"></span>LIVE EVENT
-    </button>
-    <button class="main-button" onclick="location.href='channel.html'">
-      CHANNEL TV SPORT
-    </button>
-  </main>
+  <div class="flex justify-center mt-5 px-4" id="playerSection">
+    <div class="w-full max-w-4xl">
+      <video id="videoPlayer" class="w-full rounded bg-black glow-effect" controls poster="assets/poster.png"></video>
+    </div>
+  </div>
+
+
+  <div class="flex justify-center mt-6 px-4">
+    <div id="matchCards" class="flex flex-wrap justify-center gap-4 max-w-6xl">
+
+      <div class="bg-gray-800 rounded p-3 w-60 text-center cursor-pointer hover:bg-red-700"
+        data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/pn4fdYlz/live.isml/.m3u8"
+        data-poster="https://cdn.jwplayer.com/v2/media/pn4fdYlz/poster.jpg?width=1920"
+        onclick="playStream(this)">
+        <h3 class="font-semibold mb-2">Italy vs USA</h3>
+        <p class="text-sm text-gray-300">23-07-2025 | 21:30 WIB</p>
+        <span class="live-label mt-1 inline-block">LIVE</span>
+      </div>
+
+      <div class="bg-gray-800 rounded p-3 w-60 text-center cursor-pointer hover:bg-red-700"
+        data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/SLa6ciPM/live.isml/.m3u8"
+        data-poster="https://cdn.jwplayer.com/v2/media/SLa6ciPM/poster.jpg?width=1920"
+        onclick="playStream(this)">
+        <h3 class="font-semibold mb-2">Poland vs China</h3>
+        <p class="text-sm text-gray-300">24-07-2025 | 01:00 WIB</p>
+      </div>
+
+      <div class="bg-gray-800 rounded p-3 w-60 text-center cursor-pointer hover:bg-red-700"
+        data-src="https://livecdn.euw1-0005.jwplive.com/live/sites/fM9jRrkn/media/PDmzVCfG/live.isml/.m3u8"
+        data-poster="https://cdn.jwplayer.com/v2/media/PDmzVCfG/poster.jpg?width=1920"
+        onclick="playStream(this)">
+        <h3 class="font-semibold mb-2">Japan vs Turkiye</h3>
+        <p class="text-sm text-gray-300">24-07-2025 | 21:30 WIB</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-center mt-6 px-4">
+    <div class="bg-white p-4 rounded-xl shadow-lg text-center">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://sociabuzz.com/fiqaz/support" alt="QR Donasi" class="mx-auto mb-2" />
+      <p class="text-black font-semibold">Support / Donasi</p>
+    </div>
+  </div>
 
   <footer class="text-center text-xs text-gray-400 mt-auto py-4">
-    <img class="w-16 h-16 mx-auto mb-2" src="https://api.qrserver.com/v1/create-qr-code/?data=https://example.com&size=100x100" alt="QR Code">
-    <div class="text-sm">@ 2025 GameOnX</div>
+    © 2025 GameOnX
   </footer>
 
+  <script>
+    let hls;
+
+    function playStream(el) {
+      const src = el.dataset.src;
+      const poster = el.dataset.poster;
+      const video = document.getElementById("videoPlayer");
+      video.poster = poster;
+      video.controls = true;
+
+      if (Hls.isSupported()) {
+        if (hls) hls.destroy();
+        hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        video.src = src;
+        video.play();
+      }
+
+      document.getElementById('playerSection').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
 </body>
 </html>
