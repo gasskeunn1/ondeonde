@@ -1,17 +1,32 @@
 [
   {
-    "name": "TNT",
-    "src": "https://subrugopuciblchlvl6uqa666p23rig.happy-ending.site/klean/QibeMAS7LSWitHlwOdU4ozablj8ZunO4.m3u8?auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdHJlYW1JZCI6IlFpYmVNQVM3TFNXaXRIbHdPZFU0b3phYmxqOFp1bk80IiwidHlwZSI6InBsYXlsaXN0X2FjY2VzcyIsImV4cCI6MTc1MzIxMjY0N30.S0xFQU5FTUJFRA",
-    "poster": "https://www.newscaststudio.com/wp-content/uploads/2023/02/tnt-sports-logo-preview-1024x578.jpg"
+    "name": "ABC TV",
+    "poster": "https://cdn.iview.abc.net.au/thumbs/i/X0_680b1678c94e5_1280.jpg",
+    "src": "https://kleanplay.shop/embed/7e4da2868f0546b7f269c36c85d8dfac"
   },
   {
-    "name": "TNT Sport 1",
-    "src": "https://subrugopuciblchlvl6uqa666p23rig.happy-ending.site/klean/prObIniBoc7ltizEGEvUSpLstaClmlbr.m3u8?auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdHJlYW1JZCI6InByT2JJbmlCb2M3bHRpekVHRXZVU3BMc3RhQ2xtbGJyIiwidHlwZSI6InBsYXlsaXN0X2FjY2VzcyIsImV4cCI6MTc1MzI1MTA1Nn0.S0xFQU5FTUJFRA",
-    "poster": "https://www.newscaststudio.com/wp-content/uploads/2023/02/tnt-sports-logo-preview-1024x578.jp"
-  },
-  {
-    "name": "Eurosport",
-    "src": "https://example.com/eurosport.m3u8",
-    "poster": "https://via.placeholder.com/480x270?text=Eurosport"
+    "name": "Axs TV",
+    "poster": "https://file.garden/aEH73g2_nCZCUuwA/axs.png",
+    "src": "https://kleanplay.shop/embed/3271469af3414e0e303060c2251484c8"
   }
+  {
+    "name": "Boomerang",
+    "poster": "https://github.com/tv-logo/tv-logos/blob/main/countries/united-states/hd/boomerang-hd-us.png?raw=true",
+    "src": "https://kleanplay.shop/embed/6f26a3f2f96ca70a26215b8351a36742"
+  },
+  {
+    "name": "Bravo",
+    "poster": "https://github.com/tv-logo/tv-logos/blob/main/countries/united-states/bravo-us.png?raw=true",
+    "src": "https://kleanplay.shop/embed/54a7a4af051a2835711c41160039a53a"
+  } 
+  {
+    "name": "CBS",
+    "poster": "https://file.garden/aEH73g2_nCZCUuwA/cbs.png",
+    "src": "https://kleanplay.shop/embed/v3weufn13faamb6eqbgd8myxv7zqe314"
+  },
+  {
+    "name": "Comet",
+    "poster": "https://github.com/tv-logo/tv-logos/blob/main/countries/united-states/comet-us.png?raw=true",
+    "src": "https://kleanplay.shop/embed/3271469af3414e0e303060c2251484c8"
+  }  
 ]
